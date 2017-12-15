@@ -12,18 +12,35 @@ function ChargingDock(){
       for(let s = 0; s<8; s++){
         if(this.leds[s] == "red"){
           this.port[s] = dvc;
-          this.leds[s] = "yellow";
+        }
+        if(dvc.juice < 0.99){
+          this.leds[s] == "yellow";
+        }
+        else if(dvc.juice >= 0.99){
+          this.leds[s] = "green";
         }
       }
         //type in here
     };
 
     this.unplug = function(dvcIdx){
-        //type in here
+        if(this.leds[dvcIdx] == "yellow" || this.leds[dvcIdx]== "green"){
+          let temp = this.ports[dvcIdx];
+          this.ports[dvcIdx] = undefined;
+          this.leds[dvcIdx] = "red";
+          return temp;
+        }
     };
 
     this.chargeAll = function(min){
-        //type in here
+        for(let a=0; a<8; a++;){
+          if(!(this.leds[a] == "red")){
+            this.ports[a].charge(min);
+          }
+          if(this.ports[a].juice>0.99){
+            this.leds[a] = "green";
+          }
+        }
     };
 
 
@@ -32,7 +49,7 @@ function ChargingDock(){
 //defines the testing code
 function main(){
   let cd = new ChargingDock();
-
+console.log(cd);
       let d1 = new Device("phone",3000,10000);
       let d2 = new Device("laptop",3000,15000);
       let d3 = new Device("laptop",5000,15000);
@@ -52,7 +69,7 @@ function main(){
 
       cd.unplug(0);
       cd.unplug(1);
-
+console.log(cd);
 }
 
 //runs the main code
