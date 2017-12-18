@@ -11,14 +11,12 @@ function ChargingDock(){
     this.plug = function(dvc){
       for(let s = 0; s<8; s++){
         if(this.leds[s] == "red"){
-          this.port[s] = dvc;
+          this.ports[s] = dvc;
+          this.leds[s] = "yellow";
+          break;
         }
-        if(dvc.juice < 0.99){
-          this.leds[s] == "yellow";
-        }
-        else if(dvc.juice >= 0.99){
-          this.leds[s] = "green";
-        }
+
+
       }
         //type in here
     };
@@ -33,13 +31,14 @@ function ChargingDock(){
     };
 
     this.chargeAll = function(min){
-        for(let a=0; a<8; a++;){
+        for(let a=0; a<8; a++){
           if(!(this.leds[a] == "red")){
             this.ports[a].charge(min);
+            if(this.ports[a].juice>0.99){
+             this.leds[a] = "green";
+           }
           }
-          if(this.ports[a].juice>0.99){
-            this.leds[a] = "green";
-          }
+
         }
     };
 
@@ -64,9 +63,9 @@ console.log(cd);
       cd.plug(d2);
       cd.plug(d3);
       cd.plug(d4);
-
+      console.log(cd);
       cd.chargeAll(60);
-
+      console.log(cd);
       cd.unplug(0);
       cd.unplug(1);
 console.log(cd);
